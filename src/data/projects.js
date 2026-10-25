@@ -1,0 +1,52 @@
+export const PROJECTS = [
+    {
+        id: "bcn-top1",
+        categories: ["web", "product"],
+        miniWidths: ["88%", "55%", "70%"],
+        status: "Demo nội bộ",
+        tags: ["Web", "Product"],
+        title: "Game mô phỏng BCN Top 1",
+        desc: "Tân sinh viên nghe “vận hành cộng đồng” thì khó hình dung lắm, nên tụi mình làm thành game cho dễ hiểu.",
+        solution: "Mô phỏng 3 năm BCN trên một màn hình: tuyển quân, chính sách, đấu thầu job, merch — chơi một lúc là hiểu liền.",
+        delay: null,
+    },
+    {
+        id: "pixel-quest",
+        categories: ["web", "product"],
+        miniWidths: ["70%", "88%", "45%"],
+        status: "Demo vận hành sự kiện",
+        tags: ["Web", "Product"],
+        title: "Pixel Quest — Web theo dõi đội phá án",
+        desc: "Sự kiện 8 đội mà theo dõi điểm, coin, manh mối bằng tay thì rối lắm.",
+        solution: "Tụi mình làm bảng điều hành dạng dossier: điểm, coin, đấu giá đề tài, manh mối — nhìn một chỗ là đủ.",
+        delay: "1",
+    },
+    {
+        id: "uside",
+        categories: ["web", "product"],
+        miniWidths: ["60%", "75%", "88%"],
+        status: "Demo giao diện",
+        tags: ["Web", "Product"],
+        title: "USide — Trang thành viên",
+        desc: "Trước giờ nhận và nộp bài qua Zalo thủ công, ai cũng mệt.",
+        solution: "Demo trang thành viên: tự nhận bài, tự nộp, admin nhìn thấy tiến độ — chưa phải hệ thống chạy cho mọi người đâu nha.",
+        delay: "2",
+    },
+    {
+        id: "tailieu-bcn",
+        categories: ["product", "web"],
+        miniWidths: ["88%", "40%", "65%"],
+        status: "Đã xuất bản nội bộ",
+        tags: ["Product", "Web"],
+        title: "Thư viện tài liệu BCN",
+        desc: "Kiến thức game design, UX với tổ chức hoạt động cứ nằm rải rác khắp nơi.",
+        solution: "Tụi mình gom lại thành giáo trình PDF có mục lục, ví dụ và checklist, kèm file nguồn để sửa tiếp được.",
+        delay: "3",
+    },
+];
+
+export const PROJECT_FILTERS = [
+    { id: "all", label: "Tất cả" },
+    { id: "web", label: "Web" },
+    { id: "product", label: "Product" },
+];

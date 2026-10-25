@@ -1,0 +1,24 @@
+:root {
+    --bg: #f5f5f3;
+    --white: #ffffff;
+    --ink: #171717;
+    --sec: #5c5c5c;
+    --muted: #747474;
+    --border: #e8e8e8;
+    --strong: #c9c9c9;
+    --honey: #f4c94e;
+    --darkhoney: #d6a900;
+    --pale: #fff7d6;
+    --max: 1120px;
+    --r: 18px;
+
+    /* Highlight color: amber-gold on light bg for clear contrast, honey on dark bg */
+    --color-highlight: #e89906;
+    --color-highlight-dark: var(--honey);
+
+    /* Typography variables */
+    --font-heading: "Plus Jakarta Sans", "Be Vietnam Pro", system-ui, sans-serif;
+    --disp: var(--font-heading);
+    --font-body: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+    --body: var(--font-body);
+}

@@ -1,0 +1,1836 @@
+<!doctype html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Ban Công Nghệ — Bạn thích công nghệ, mà chưa biết bắt đầu từ đâu?</title>
+        <meta name="description" content="BCN là nơi sinh viên cùng học, cùng làm sản phẩm phần mềm. Cứ thử một việc nhỏ trước đã, rồi tính tiếp." />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+        <style>
+            :root {
+                --bg: #f5f5f3;
+                --white: #ffffff;
+                --ink: #171717;
+                --sec: #5c5c5c;
+                --muted: #747474;
+                --border: #e8e8e8;
+                --strong: #c9c9c9;
+                --honey: #f4c94e;
+                --darkhoney: #d6a900;
+                --pale: #fff7d6;
+                --max: 1120px;
+                --r: 18px;
+                --disp: "Space Grotesk", "Be Vietnam Pro", system-ui, sans-serif;
+                --body: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+            }
+            * {
+                box-sizing: border-box;
+            }
+            /* FIX LỖI PILL TRỐNG: mọi nút đều có màu chữ + nền + font explicit, không phụ thuộc inherit.
+   Ở v5/v6, .win-tab và .culture-btn không khai màu chữ, chỉ ăn theo màu cha — trong khung xem
+   của app, màu cha có thể bị ghi đè thành trắng, khiến chữ trắng trên nền trắng và pill trông trống. */
+            button {
+                color: #171717;
+                background: #fff;
+                font-family: var(--body);
+            }
+            html {
+                scroll-behavior: smooth;
+                scroll-padding-top: 76px;
+            }
+            body {
+                margin: 0;
+                background: var(--bg);
+                color: var(--ink);
+                font-family: var(--body);
+                font-size: 16.5px;
+                line-height: 1.7;
+                -webkit-font-smoothing: antialiased;
+            }
+            a {
+                color: inherit;
+            }
+            a:focus-visible,
+            button:focus-visible,
+            input:focus-visible {
+                outline: 3px solid var(--darkhoney);
+                outline-offset: 3px;
+                border-radius: 8px;
+            }
+            .wrap {
+                max-width: var(--max);
+                margin: 0 auto;
+                padding: 0 24px;
+            }
+            .skip {
+                position: absolute;
+                left: -9999px;
+                top: 0;
+                background: var(--honey);
+                color: #171717;
+                padding: 10px 14px;
+                z-index: 99;
+                font-weight: 700;
+            }
+            .skip:focus {
+                left: 12px;
+                top: 12px;
+            }
+            .progress {
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 3px;
+                background: var(--honey);
+                width: 0;
+                z-index: 100;
+            }
+            header {
+                position: sticky;
+                top: 0;
+                z-index: 50;
+                background: rgba(245, 245, 243, 0.92);
+                backdrop-filter: blur(10px);
+                border-bottom: 1px solid var(--border);
+            }
+            .nav {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 16px;
+                min-height: 68px;
+            }
+            .brand {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                text-decoration: none;
+                font-family: var(--disp);
+                font-weight: 700;
+                font-size: 19px;
+            }
+            .brandmark {
+                width: 34px;
+                height: 34px;
+                background: var(--ink);
+                color: var(--honey);
+                display: grid;
+                place-items: center;
+                border-radius: 9px;
+                font-size: 13px;
+            }
+            .brand small {
+                display: block;
+                font-family: var(--body);
+                font-size: 10px;
+                letter-spacing: 0.16em;
+                color: var(--sec);
+                font-weight: 600;
+            }
+            .navlinks {
+                display: flex;
+                gap: 4px;
+                flex-wrap: wrap;
+                align-items: center;
+            }
+            .navlinks a {
+                padding: 8px 12px;
+                border-radius: 999px;
+                text-decoration: none;
+                font-size: 14.5px;
+                color: var(--sec);
+                transition:
+                    background 0.2s,
+                    color 0.2s;
+            }
+            .navlinks a:hover,
+            .navlinks a.active {
+                color: var(--ink);
+                background: var(--pale);
+            }
+            #menuBtn {
+                display: none;
+                border: 1px solid var(--strong);
+                background: #fff;
+                color: #171717;
+                border-radius: 10px;
+                padding: 9px 13px;
+                font-family: var(--body);
+                font-weight: 650;
+                cursor: pointer;
+            }
+            .rail {
+                position: fixed;
+                left: 22px;
+                top: 50%;
+                transform: translateY(-50%);
+                z-index: 40;
+                display: flex;
+                flex-direction: column;
+                gap: 14px;
+            }
+            .rail a {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                text-decoration: none;
+                color: var(--muted);
+                font-family: var(--disp);
+                font-size: 13px;
+                font-weight: 700;
+            }
+            .rail a i {
+                display: block;
+                height: 2px;
+                width: 18px;
+                background: var(--strong);
+                transition:
+                    width 0.25s,
+                    background 0.25s;
+            }
+            .rail a.active {
+                color: var(--ink);
+            }
+            .rail a.active i {
+                width: 34px;
+                background: var(--ink);
+            }
+            @media (max-width: 1240px) {
+                .rail {
+                    display: none;
+                }
+            }
+            .btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                padding: 13px 22px;
+                border-radius: 999px;
+                text-decoration: none;
+                font-weight: 700;
+                font-size: 15.5px;
+                border: 1px solid transparent;
+                cursor: pointer;
+                transition:
+                    transform 0.18s,
+                    box-shadow 0.2s,
+                    background 0.2s,
+                    border-color 0.2s;
+                will-change: transform;
+            }
+            .btn .arr {
+                transition: transform 0.2s;
+                display: inline-block;
+            }
+            .btn:hover .arr {
+                transform: translateX(4px);
+            }
+            .btn:active {
+                transform: scale(0.96);
+            }
+            .btn-primary {
+                background: var(--honey);
+                color: #171717;
+            }
+            .btn-primary:hover {
+                background: #eabb2e;
+                box-shadow: 0 10px 28px rgba(244, 201, 78, 0.45);
+            }
+            .btn-ghost {
+                background: #fff;
+                border-color: var(--strong);
+                color: var(--ink);
+            }
+            .btn-ghost:hover {
+                border-color: var(--ink);
+            }
+            .btn-sm {
+                padding: 9px 16px;
+                font-size: 14px;
+            }
+            .btn-label {
+                display: inline-block;
+                min-width: 150px;
+                text-align: left;
+                transition: opacity 0.15s;
+            }
+            .eyebrow {
+                font-size: 11.5px;
+                letter-spacing: 0.18em;
+                font-weight: 700;
+                color: var(--sec);
+                text-transform: uppercase;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+            .eyebrow.center {
+                justify-content: center;
+            }
+            .eyebrow::before {
+                content: "";
+                width: 8px;
+                height: 8px;
+                background: var(--honey);
+                border-radius: 50%;
+                flex: none;
+            }
+            /* KHÔNG dùng font serif in nghiêng nữa: chính nó làm vỡ dấu tiếng Việt ở v5.
+   Nhấn bằng font Be Vietnam Pro + gạch vàng, dấu hiển thị đúng. */
+            h1 {
+                font-family: var(--disp);
+                font-size: clamp(40px, 5.6vw, 68px);
+                line-height: 1.12;
+                letter-spacing: -0.02em;
+                margin: 16px 0 14px;
+            }
+            h1 em,
+            h2 em {
+                font-style: normal;
+                box-shadow: inset 0 -0.32em 0 var(--honey);
+                padding: 0 2px;
+            }
+            h2 {
+                font-family: var(--disp);
+                font-size: clamp(28px, 3.6vw, 42px);
+                line-height: 1.2;
+                letter-spacing: -0.01em;
+                margin: 0 0 10px;
+            }
+            h3 {
+                font-size: 19px;
+                margin: 0 0 6px;
+            }
+            .lead {
+                font-size: 18px;
+                color: var(--sec);
+                max-width: 640px;
+                margin: 0;
+            }
+            .lead.center {
+                margin-left: auto;
+                margin-right: auto;
+                text-align: center;
+            }
+            section {
+                padding: 96px 0;
+            }
+            .sec-head {
+                margin-bottom: 32px;
+            }
+            .sec-head.center {
+                text-align: center;
+            }
+            .sec-head.center .lead {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .reveal {
+                opacity: 0;
+                transform: translateY(16px);
+                transition:
+                    opacity 0.55s ease,
+                    transform 0.55s ease;
+            }
+            .reveal.in {
+                opacity: 1;
+                transform: none;
+            }
+            .reveal[data-d="1"] {
+                transition-delay: 0.07s;
+            }
+            .reveal[data-d="2"] {
+                transition-delay: 0.14s;
+            }
+            .reveal[data-d="3"] {
+                transition-delay: 0.21s;
+            }
+            .hero {
+                padding: 84px 0 48px;
+                text-align: center;
+            }
+            .hero .lead {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .hero-ctas {
+                display: flex;
+                gap: 12px;
+                flex-wrap: wrap;
+                margin-top: 28px;
+                justify-content: center;
+                align-items: center;
+            }
+            .hero-window {
+                max-width: 720px;
+                margin: 40px auto 0;
+                text-align: left;
+            }
+            .window {
+                background: #fff;
+                border: 2px solid var(--ink);
+                border-radius: 20px;
+                overflow: hidden;
+                box-shadow:
+                    10px 10px 0 var(--honey),
+                    0 18px 50px rgba(23, 23, 23, 0.1);
+                transition:
+                    transform 0.25s,
+                    box-shadow 0.25s;
+            }
+            .window:hover {
+                transform: translateY(-3px);
+                box-shadow:
+                    12px 12px 0 var(--honey),
+                    0 24px 60px rgba(23, 23, 23, 0.12);
+            }
+            .win-bar {
+                display: flex;
+                align-items: center;
+                gap: 7px;
+                padding: 13px 16px;
+                border-bottom: 1px solid var(--ink);
+                background: var(--ink);
+                color: #fff;
+            }
+            .win-bar i {
+                width: 11px;
+                height: 11px;
+                border-radius: 50%;
+                background: #555;
+                display: block;
+            }
+            .win-bar i:first-child {
+                background: var(--honey);
+            }
+            .win-bar b {
+                font-size: 13.5px;
+                margin-left: 8px;
+            }
+            .win-tabs {
+                display: flex;
+                gap: 6px;
+                padding: 14px 16px 0;
+                flex-wrap: wrap;
+            }
+            .win-tab {
+                border: 1px solid var(--strong);
+                background: #fff;
+                color: #171717;
+                border-radius: 999px;
+                padding: 7px 14px;
+                font-family: var(--body);
+                font-size: 14px;
+                font-weight: 650;
+                cursor: pointer;
+                transition: all 0.2s;
+            }
+            .win-tab[aria-selected="true"] {
+                background: var(--ink);
+                color: #fff;
+                border-color: var(--ink);
+            }
+            .win-body {
+                padding: 18px 20px 20px;
+            }
+            .mock {
+                border: 1px solid var(--border);
+                border-radius: 14px;
+                padding: 18px;
+                background: var(--bg);
+            }
+            .mock label {
+                display: block;
+                font-size: 14px;
+                font-weight: 700;
+                margin-bottom: 8px;
+            }
+            .mock input {
+                width: 100%;
+                padding: 12px;
+                border: 1px solid var(--strong);
+                border-radius: 10px;
+                font-family: var(--body);
+                background: #fff;
+            }
+            .mock .mock-btn {
+                margin-top: 12px;
+                width: 100%;
+                padding: 12px;
+                border-radius: 10px;
+                border: 0;
+                font-family: var(--body);
+                font-weight: 700;
+                cursor: pointer;
+                background: var(--ink);
+                color: #fff;
+                transition:
+                    transform 0.15s,
+                    background 0.2s;
+            }
+            .mock .mock-btn:active {
+                transform: scale(0.97);
+            }
+            .mock .mock-btn.fixed {
+                background: var(--honey);
+                color: #171717;
+            }
+            .mock .hint {
+                font-size: 13.5px;
+                color: var(--sec);
+                margin: 10px 0 0;
+                min-height: 20px;
+            }
+            .toast {
+                margin-top: 12px;
+                padding: 11px 14px;
+                border-radius: 10px;
+                font-size: 14.5px;
+                font-weight: 600;
+                display: none;
+                background: var(--pale);
+                border: 1px solid #f0df9a;
+            }
+            .toast.show {
+                display: block;
+                animation: pop 0.25s ease;
+            }
+            @keyframes pop {
+                from {
+                    opacity: 0;
+                    transform: translateY(4px);
+                }
+                to {
+                    opacity: 1;
+                    transform: none;
+                }
+            }
+            .takeaway {
+                font-size: 14.5px;
+                color: var(--sec);
+                padding: 0 20px 18px;
+                margin: 0;
+            }
+            .takeaway b {
+                color: var(--ink);
+            }
+            .marquee {
+                border-top: 1px solid var(--border);
+                border-bottom: 1px solid var(--border);
+                overflow: hidden;
+                padding: 13px 0;
+                white-space: nowrap;
+                background: #fff;
+                -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+                mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+                user-select: none;
+            }
+            .marquee-track {
+                display: flex;
+                width: max-content;
+                will-change: transform;
+                animation: marquee-scroll 50s linear infinite;
+            }
+            .marquee-group {
+                display: flex;
+                align-items: center;
+                flex-shrink: 0;
+            }
+            .marquee span {
+                font-family: var(--disp);
+                font-size: 19px;
+                font-weight: 700;
+                color: var(--ink);
+                padding-right: 34px;
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+            .marquee span b {
+                color: var(--darkhoney);
+            }
+            @keyframes marquee-scroll {
+                from {
+                    transform: translate3d(0, 0, 0);
+                }
+                to {
+                    transform: translate3d(-50%, 0, 0);
+                }
+            }
+            .grid3 {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 16px;
+            }
+            .card {
+                background: #fff;
+                border: 1px solid var(--border);
+                border-radius: var(--r);
+                padding: 24px;
+                position: relative;
+                overflow: hidden;
+                transition:
+                    transform 0.25s,
+                    border-color 0.25s,
+                    box-shadow 0.25s;
+            }
+            .card::before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0;
+                height: 3px;
+                width: 0;
+                background: var(--honey);
+                transition: width 0.3s;
+            }
+            .card:hover {
+                transform: translateY(-4px);
+                border-color: var(--strong);
+                box-shadow: 0 14px 34px rgba(23, 23, 23, 0.07);
+            }
+            .card:hover::before {
+                width: 100%;
+            }
+            .card p {
+                color: var(--sec);
+                margin: 6px 0 0;
+                font-size: 15.5px;
+            }
+            .card .n {
+                font-family: var(--disp);
+                font-size: 13px;
+                letter-spacing: 0.14em;
+                color: var(--muted);
+                display: block;
+                margin-bottom: 10px;
+            }
+            .card-dark {
+                background: var(--ink);
+                color: #fff;
+                border-color: var(--ink);
+            }
+            .card-dark p {
+                color: #ccc;
+            }
+            .card-dark .n {
+                color: var(--honey);
+            }
+            .chip {
+                border: 1px solid var(--strong);
+                background: #fff;
+                border-radius: 999px;
+                padding: 6px 13px;
+                font-size: 13.5px;
+                color: var(--sec);
+                transition:
+                    transform 0.2s,
+                    border-color 0.2s;
+            }
+            .chip:hover {
+                transform: translateY(-2px);
+                border-color: var(--ink);
+                color: var(--ink);
+            }
+            .tracks {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 14px;
+            }
+            .track {
+                width: 100%;
+                text-align: left;
+                background: #fff;
+                border: 1px solid var(--border);
+                border-radius: var(--r);
+                padding: 22px;
+                color: var(--ink);
+                font-family: var(--body);
+                cursor: pointer;
+                transition:
+                    transform 0.2s,
+                    border-color 0.2s,
+                    box-shadow 0.2s,
+                    background 0.2s;
+            }
+            .track:hover {
+                transform: translateY(-3px);
+            }
+            .track[aria-selected="true"] {
+                background: var(--ink);
+                color: #fff;
+                border-color: var(--ink);
+                box-shadow: inset 0 -4px 0 var(--honey);
+            }
+            .track[aria-selected="true"] span {
+                color: #ccc;
+            }
+            .track b {
+                font-family: var(--disp);
+                font-size: 20px;
+                display: block;
+            }
+            .track span {
+                color: var(--sec);
+                font-size: 14.5px;
+            }
+            .track-detail {
+                background: #fff;
+                border: 1px solid var(--border);
+                border-radius: var(--r);
+                padding: 26px;
+                margin-top: 16px;
+            }
+            .track-detail.fade {
+                animation: fade 0.3s ease;
+            }
+            @keyframes fade {
+                from {
+                    opacity: 0;
+                    transform: translateY(6px);
+                }
+                to {
+                    opacity: 1;
+                    transform: none;
+                }
+            }
+            .track-detail p {
+                color: var(--sec);
+            }
+            .track-detail p b {
+                color: var(--ink);
+            }
+            .skillchips {
+                display: flex;
+                gap: 8px;
+                flex-wrap: wrap;
+                margin: 14px 0;
+            }
+            .first-step {
+                background: var(--pale);
+                border: 1px solid #f0df9a;
+                border-radius: 12px;
+                padding: 14px 16px;
+                margin-top: 16px;
+            }
+            .first-step b {
+                color: var(--ink);
+            }
+            .dark-sec {
+                background: var(--ink);
+                color: #fff;
+            }
+            .dark-sec h2 {
+                color: #fff;
+            }
+            .dark-sec .lead {
+                color: #ccc;
+            }
+            .dark-sec .filter-note {
+                color: #999;
+            }
+            .dark-sec .pill {
+                background: #252525;
+                color: #fff;
+                border-color: #444;
+            }
+            .dark-sec .pill[aria-selected="true"] {
+                background: var(--honey);
+                color: #171717;
+                border-color: var(--honey);
+            }
+            .dark-sec .card {
+                box-shadow: none;
+            }
+            .mini {
+                height: 58px;
+                background: var(--bg);
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                padding: 12px;
+                display: flex;
+                flex-direction: column;
+                gap: 7px;
+                justify-content: center;
+                margin-bottom: 14px;
+            }
+            .mini i {
+                display: block;
+                height: 8px;
+                border-radius: 99px;
+                background: var(--ink);
+            }
+            .mini i:nth-child(2) {
+                background: var(--honey);
+            }
+            .mini i:nth-child(3) {
+                background: #d8d8d8;
+            }
+            .filters {
+                display: flex;
+                gap: 8px;
+                flex-wrap: wrap;
+                margin: 18px 0 4px;
+            }
+            .pill {
+                border: 1px solid var(--strong);
+                background: #fff;
+                border-radius: 999px;
+                padding: 9px 16px;
+                font-family: var(--body);
+                font-weight: 650;
+                cursor: pointer;
+                transition: all 0.2s;
+                color: var(--ink);
+            }
+            .pill:hover {
+                transform: translateY(-2px);
+            }
+            .pill[aria-selected="true"] {
+                background: var(--ink);
+                color: #fff;
+                border-color: var(--ink);
+            }
+            .filter-note {
+                font-size: 14px;
+                color: var(--muted);
+            }
+            .project-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 16px;
+                margin-top: 18px;
+            }
+            .project {
+                padding: 24px;
+            }
+            .status {
+                font-size: 12.5px;
+                color: #7a5b00;
+                background: var(--pale);
+                border: 1px solid #f0df9a;
+                border-radius: 999px;
+                padding: 3px 10px;
+                display: inline-block;
+                margin-bottom: 12px;
+                font-weight: 700;
+            }
+            .solution {
+                display: none;
+                margin-top: 14px;
+                padding-top: 14px;
+                border-top: 1px dashed var(--strong);
+            }
+            .solution.open {
+                display: block;
+                animation: fade 0.3s ease;
+            }
+            .solution p {
+                color: var(--sec);
+                font-size: 15.5px;
+            }
+            .toggle-btn {
+                margin-top: 14px;
+                background: none;
+                border: 0;
+                padding: 0;
+                font-family: var(--body);
+                font-weight: 700;
+                cursor: pointer;
+                color: var(--ink);
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+            .toggle-btn .chev {
+                transition: transform 0.25s;
+                display: inline-block;
+            }
+            .toggle-btn[aria-expanded="true"] .chev {
+                transform: rotate(180deg);
+            }
+            .culture {
+                display: flex;
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+            .culture-btn {
+                border: 1px solid var(--strong);
+                background: #fff;
+                color: #171717;
+                border-radius: 999px;
+                padding: 10px 16px;
+                font-family: var(--body);
+                font-weight: 650;
+                cursor: pointer;
+                transition: all 0.2s;
+            }
+            .culture-btn:hover {
+                transform: translateY(-2px);
+            }
+            .culture-btn[aria-selected="true"] {
+                background: var(--honey);
+                border-color: var(--honey);
+                color: #171717;
+            }
+            .culture-answer {
+                background: #fff;
+                border: 1px solid var(--border);
+                border-left: 4px solid var(--honey);
+                border-radius: 12px;
+                padding: 18px 20px;
+                margin-top: 14px;
+                font-size: 17px;
+            }
+            .culture-answer b {
+                color: var(--ink);
+            }
+            .faq {
+                max-width: 820px;
+            }
+            .acc {
+                border: 1px solid var(--border);
+                border-radius: 14px;
+                margin-bottom: 10px;
+                overflow: hidden;
+                background: #fff;
+                transition: border-color 0.2s;
+            }
+            .acc:hover {
+                border-color: var(--strong);
+            }
+            .acc-btn {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 16px;
+                text-align: left;
+                background: none;
+                border: 0;
+                color: var(--ink);
+                font-family: var(--body);
+                font-weight: 700;
+                font-size: 16.5px;
+                padding: 19px 22px;
+                cursor: pointer;
+            }
+            .acc-btn .plus {
+                color: var(--darkhoney);
+                font-size: 22px;
+                line-height: 1;
+                transition: transform 0.25s;
+                flex: none;
+            }
+            .acc.open .plus {
+                transform: rotate(45deg);
+            }
+            .acc-panel {
+                display: grid;
+                grid-template-rows: 0fr;
+                transition: grid-template-rows 0.3s ease;
+            }
+            .acc.open .acc-panel {
+                grid-template-rows: 1fr;
+            }
+            .acc-panel > div {
+                overflow: hidden;
+            }
+            .acc-panel p {
+                color: var(--sec);
+                padding: 0 22px 20px;
+                margin: 0;
+            }
+            .note {
+                font-size: 14.5px;
+                color: var(--sec);
+                border: 1px dashed var(--strong);
+                border-radius: 12px;
+                padding: 14px 16px;
+                margin-top: 20px;
+                background: #fff;
+            }
+            /* BỨC THƯ — bản gọn: chỉ giữ những gì thư thật cần, bỏ hết chi tiết thừa.
+   Bố cục: giấy kem phẳng, nắp tam giác, túi trước, tem thẳng góc phải,
+   địa chỉ gọn góc trái, con dấu đúng ở đầu nắp. Không chấm nền, không bóng vàng,
+   không dấu bưu điện chồng lên tem. */
+            .letter-stage {
+                max-width: 600px;
+                margin: 32px auto 0;
+                perspective: 1200px;
+                text-align: center;
+            }
+            .letter-title {
+                font-family: var(--disp);
+                font-size: clamp(24px, 3vw, 32px);
+                margin: 0 0 6px;
+            }
+            .letter-sub {
+                color: var(--sec);
+                margin: 0 0 32px;
+            }
+            .envelope {
+                position: relative;
+                width: 100%;
+                height: 320px;
+                margin: 0 auto;
+                border: 2px solid var(--ink);
+                border-radius: 12px;
+                background: #fdf8ec;
+                box-shadow: 0 20px 40px rgba(23, 23, 23, 0.14);
+                cursor: pointer;
+                font-family: var(--body);
+                color: #171717;
+                text-align: left;
+                overflow: visible;
+                transition:
+                    transform 0.3s,
+                    box-shadow 0.3s;
+            }
+            .envelope:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 28px 50px rgba(23, 23, 23, 0.18);
+            }
+            .envelope:active {
+                transform: scale(0.98);
+            }
+            /* Tờ thư: ban đầu nằm trong bì, chỉ ló đầu; nội dung đầy đủ bên trong, bị cắt bởi chiều cao */
+            .letter-paper {
+                position: absolute;
+                left: 24px;
+                right: 24px;
+                top: 22px;
+                height: 210px;
+                z-index: 1;
+                background: #fffef8;
+                border: 1px solid #e8dfc8;
+                border-radius: 4px;
+                padding: 30px 32px;
+                box-shadow: 0 8px 24px rgba(23, 23, 23, 0.12);
+                overflow: hidden;
+                transition:
+                    transform 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+                    height 0.7s ease,
+                    box-shadow 0.7s ease;
+            }
+            .letter-paper .lp-to {
+                font-family: var(--disp);
+                font-weight: 700;
+                font-size: 21px;
+                margin: 0 0 14px;
+            }
+            .letter-paper p {
+                color: #333;
+                font-size: 17px;
+                line-height: 1.8;
+                margin: 0 0 14px;
+            }
+            .letter-paper .sign {
+                color: var(--ink);
+                font-weight: 700;
+            }
+            /* Khi mở: thư trượt lên TRƯỚC túi thư (z-index cao), rồi nở chiều cao để đọc hết */
+            .envelope.letter-up .letter-paper {
+                transform: translateY(-150px);
+                height: 430px;
+                z-index: 10;
+                box-shadow: 0 30px 60px rgba(23, 23, 23, 0.28);
+            }
+            .envelope.letter-closing .letter-paper {
+                z-index: 10;
+            }
+            /* Mặt trước bì: TẤM KÍN che toàn bộ tờ thư khi chưa mở. Không còn vạch chéo (vạch đè lên chữ ở v10). */
+            .env-front {
+                position: absolute;
+                inset: 0;
+                z-index: 2;
+                background: #fdf8ec;
+                border-radius: 10px;
+                pointer-events: none;
+            }
+            /* Nắp thư tam giác: khi mở lật ngược lên trên, rồi chìm xuống sau thư */
+            .env-flap-border {
+                position: absolute;
+                left: -4px;
+                right: -4px;
+                top: -4px;
+                height: 154px;
+                z-index: 3;
+                background: var(--ink);
+                clip-path: polygon(0 0, 100% 0, 50% 100%);
+                transform-origin: top center;
+                transition:
+                    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.15s,
+                    z-index 0s 0.5s;
+                pointer-events: none;
+            }
+            .env-flap {
+                position: absolute;
+                left: -2px;
+                right: -2px;
+                top: -2px;
+                height: 150px;
+                z-index: 4;
+                background: var(--honey);
+                border: 2px solid var(--ink);
+                border-bottom: 0;
+                border-radius: 10px 10px 0 0;
+                clip-path: polygon(0 0, 100% 0, 50% 100%);
+                transform-origin: top center;
+                transition:
+                    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.15s,
+                    z-index 0s 0.5s;
+                pointer-events: none;
+            }
+            .envelope.flap-open .env-flap {
+                transform: rotateX(180deg);
+                z-index: 0;
+            }
+            .envelope.flap-open .env-flap-border {
+                transform: rotateX(180deg);
+                z-index: 0;
+            }
+            /* Địa chỉ nằm trên túi thư, gọn 2 dòng, không chữ chồng chữ */
+            .env-addr {
+                position: absolute;
+                left: 28px;
+                bottom: 36px;
+                z-index: 5;
+                pointer-events: none;
+            }
+            .env-addr b {
+                font-family: var(--disp);
+                font-size: 20px;
+                display: block;
+                line-height: 1.35;
+            }
+            .env-addr span {
+                display: block;
+                color: var(--sec);
+                font-size: 14px;
+                margin-top: 4px;
+            }
+            .env-addr i {
+                display: block;
+                width: 36px;
+                height: 3px;
+                background: var(--honey);
+                margin-top: 10px;
+            }
+            /* Tem: thẳng, không xoay, viền răng cưa bằng đường đứt mảnh */
+            .env-stamp {
+                position: absolute;
+                top: 18px;
+                right: 20px;
+                z-index: 5;
+                width: 64px;
+                height: 72px;
+                background: #fff;
+                border: 2px solid var(--ink);
+                display: grid;
+                place-content: center;
+                text-align: center;
+                font-family: var(--disp);
+                font-weight: 700;
+                font-size: 15px;
+                line-height: 1.25;
+                pointer-events: none;
+            }
+            .env-stamp small {
+                font-size: 9px;
+                letter-spacing: 0.06em;
+                color: var(--sec);
+            }
+            /* Con dấu: đúng ở đầu nắp (nắp cao 150px, đầu nắp ở 150px, dấu tâm 150px) */
+            .env-seal {
+                position: absolute;
+                left: 50%;
+                top: 126px;
+                z-index: 6;
+                width: 48px;
+                height: 48px;
+                transform: translateX(-50%);
+                background: var(--ink);
+                color: var(--honey);
+                border: 2px solid var(--ink);
+                border-radius: 50%;
+                display: grid;
+                place-items: center;
+                font-family: var(--disp);
+                font-weight: 700;
+                font-size: 16px;
+                box-shadow: 0 4px 10px rgba(23, 23, 23, 0.2);
+                transition:
+                    transform 0.35s ease,
+                    opacity 0.35s ease;
+                pointer-events: none;
+            }
+            .envelope.flap-open .env-seal {
+                transform: translateX(-50%) scale(1.25);
+                opacity: 0;
+            }
+            .env-hint {
+                display: block;
+                margin-top: 24px;
+                font-size: 15px;
+                color: var(--sec);
+                font-weight: 700;
+                text-align: center;
+            }
+            .letter-close {
+                display: none;
+                margin: 20px auto 0;
+            }
+            .letter-stage.open .letter-close {
+                display: inline-flex;
+            }
+            @media (max-width: 560px) {
+                .envelope {
+                    height: 290px;
+                }
+                .letter-paper {
+                    left: 14px;
+                    right: 14px;
+                    padding: 22px;
+                }
+                .envelope.letter-up .letter-paper {
+                    transform: translateY(-110px);
+                    height: 560px;
+                }
+                .env-addr {
+                    left: 20px;
+                    bottom: 28px;
+                }
+            }
+            .cta {
+                padding: 72px 0;
+                border-top: 1px solid var(--border);
+                background: var(--bg);
+            }
+            .cta .wrap {
+                background: var(--ink);
+                color: #fff;
+                border-radius: 24px;
+                padding: 44px 40px;
+            }
+            .cta h2 {
+                color: #fff;
+            }
+            .cta .lead {
+                color: #ccc;
+            }
+            .cta .btn-ghost {
+                background: transparent;
+                color: #fff;
+                border-color: #555;
+            }
+            .cta .btn-ghost:hover {
+                border-color: #fff;
+            }
+            footer {
+                border-top: 1px solid var(--ink);
+                padding: 44px 0 32px;
+                color: #aaa;
+                font-size: 14.5px;
+                background: var(--ink);
+            }
+            .foot-grid {
+                display: grid;
+                grid-template-columns: 1.4fr 1fr 1fr;
+                gap: 28px;
+            }
+            footer h4 {
+                color: #fff;
+                margin: 0 0 10px;
+                font-size: 15px;
+            }
+            footer a {
+                text-decoration: none;
+                color: #aaa;
+            }
+            footer a:hover {
+                color: #fff;
+            }
+            @media (max-width: 900px) {
+                .grid3,
+                .project-grid {
+                    grid-template-columns: 1fr;
+                }
+                .tracks {
+                    grid-template-columns: 1fr 1fr;
+                }
+                .foot-grid {
+                    grid-template-columns: 1fr;
+                }
+                .navlinks {
+                    display: none;
+                }
+                .navlinks.open {
+                    display: flex;
+                    flex-direction: column;
+                    width: 100%;
+                    padding-bottom: 14px;
+                }
+                #menuBtn {
+                    display: block;
+                }
+                .nav {
+                    flex-wrap: wrap;
+                }
+                .brand small {
+                    display: none;
+                }
+                section {
+                    padding: 64px 0;
+                }
+            }
+            @media (max-width: 520px) {
+                .tracks {
+                    grid-template-columns: 1fr;
+                }
+            }
+            @media (prefers-reduced-motion: reduce) {
+                html {
+                    scroll-behavior: auto;
+                }
+                * {
+                    animation: none !important;
+                    transition: none !important;
+                }
+                .reveal {
+                    opacity: 1;
+                    transform: none;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="progress" id="progress" aria-hidden="true"></div>
+        <a class="skip" href="#main">Bỏ qua điều hướng, tới nội dung chính</a>
+        <nav class="rail" aria-label="Các phần của trang">
+            <a href="#top" data-rail="top"><i></i>01</a>
+            <a href="#gioi-thieu" data-rail="gioi-thieu"><i></i>02</a>
+            <a href="#huong-di" data-rail="huong-di"><i></i>03</a>
+            <a href="#du-an" data-rail="du-an"><i></i>04</a>
+            <a href="#noi-thang" data-rail="noi-thang"><i></i>05</a>
+            <a href="#faq" data-rail="faq"><i></i>06</a>
+        </nav>
+        <header>
+            <div class="wrap nav">
+                <a class="brand" href="#top"
+                    ><span class="brandmark">BCN</span><span>Ban Công Nghệ<small>CỘNG ĐỒNG SINH VIÊN CÔNG NGHỆ</small></span></a
+                >
+                <button id="menuBtn" aria-expanded="false" aria-controls="navlinks">Menu</button>
+                <nav class="navlinks" id="navlinks" aria-label="Điều hướng chính">
+                    <a href="#gioi-thieu">BCN là gì</a><a href="#huong-di">Bạn tò mò gì?</a><a href="#du-an">Dự án</a><a href="#noi-thang">Nói thật</a><a href="#faq">FAQ</a>
+                    <a class="btn btn-primary btn-sm" href="#huong-di" style="margin-left: 6px">Tìm hướng của bạn</a>
+                </nav>
+            </div>
+        </header>
+        <main id="main">
+            <section class="hero" id="top">
+                <div class="wrap">
+                    <p class="eyebrow center">Ban Công Nghệ · BCN</p>
+                    <h1>Bạn thích công nghệ,<br />mà chưa biết <em>bắt đầu từ đâu?</em></h1>
+                    <p class="lead">Không sao đâu. Ở BCN, không ai bắt bạn phải giỏi trước rồi mới được làm. Cứ thử một việc nhỏ xíu trước đã, rồi mình tính tiếp.</p>
+                    <div class="hero-ctas">
+                        <a class="btn btn-primary" id="heroCta" href="#huong-di" data-default="Tìm hướng của bạn" data-hover="Thử đi, không mất gì đâu"><span class="btn-label">Tìm hướng của bạn</span> <span class="arr">→</span></a>
+                        <a class="btn btn-ghost" href="#du-an">Xem tụi mình đã làm gì</a>
+                    </div>
+                    <div class="hero-window window">
+                        <div class="win-bar"><i></i><i></i><i></i><b>BCN · nộp bài thử</b></div>
+                        <div class="win-tabs" role="tablist" aria-label="Ba trạng thái của một tính năng">
+                            <button class="win-tab" aria-selected="true" data-state="problem">1 · Có vấn đề nè</button>
+                            <button class="win-tab" aria-selected="false" data-state="first">2 · Thử sửa lần 1</button>
+                            <button class="win-tab" aria-selected="false" data-state="fixed">3 · Sửa xong rồi nè</button>
+                        </div>
+                        <div class="win-body">
+                            <div class="mock">
+                                <label for="mockInput" id="mockLabel">Tên bài nộp của bạn</label>
+                                <input id="mockInput" type="text" placeholder="VD: Bài tập tuần 1" />
+                                <button class="mock-btn" id="mockBtn" type="button">Gửi</button>
+                                <p class="hint" id="mockHint">Bấm thử nút này nha.</p>
+                            </div>
+                            <div class="toast" id="mockToast" role="status"></div>
+                        </div>
+                        <p class="takeaway" id="mockTakeaway"><b>Có vấn đề nè:</b> Bấm “Gửi” rồi mà chẳng thấy gì xảy ra, thế là bấm thêm 3 lần nữa cho chắc.</p>
+                    </div>
+                </div>
+            </section>
+            <div class="marquee" aria-hidden="true"><div class="marquee-track" id="marqueeTrack"></div></div>
+            <section id="gioi-thieu">
+                <div class="wrap">
+                    <div class="sec-head center reveal">
+                        <p class="eyebrow center">BCN là gì</p>
+                        <h2>Ở BCN, tụi mình <em>học kiểu khác</em> một chút.</h2>
+                    </div>
+                    <div class="grid3">
+                        <article class="card reveal" data-d="1">
+                            <span class="n">01</span>
+                            <h3>Học để làm được việc</h3>
+                            <p>Không học thuộc lòng. Học cái gì thì đem ra làm thử cái đó liền.</p>
+                        </article>
+                        <article class="card reveal" data-d="2">
+                            <span class="n">02</span>
+                            <h3>Làm rồi sửa, sửa rồi làm</h3>
+                            <p>Làm chưa tốt cũng không sao, có người góp ý rồi mình sửa tiếp là được.</p>
+                        </article>
+                        <article class="card card-dark reveal" data-d="3">
+                            <span class="n">03</span>
+                            <h3>Có nhau thì đỡ nản hơn</h3>
+                            <p>Chia sẻ với nhau, làm chung với nhau, tới đâu cũng có người đồng hành.</p>
+                        </article>
+                    </div>
+                    <p class="reveal" style="color: var(--sec); margin-top: 20px; text-align: center">Tụi mình không phải lớp học thêm, không phải công ty, cũng không phải chỗ chỉ để chơi cho vui.</p>
+                </div>
+            </section>
+            <section id="huong-di" style="border-top: 1px solid var(--border); background: #fff">
+                <div class="wrap">
+                    <div class="sec-head center reveal">
+                        <p class="eyebrow center">Bạn tò mò về gì?</p>
+                        <h2>Chọn một ô thôi, <em>đừng lo chọn sai.</em></h2>
+                        <p class="lead center">Chưa biết mình hợp cái gì cũng bình thường mà. Chọn cái nào khiến bạn tò mò nhất là được.</p>
+                    </div>
+                    <div class="tracks" role="tablist" aria-label="Chọn điều bạn tò mò">
+                        <button class="track reveal" role="tab" aria-selected="true" data-track="web"><b>Web</b><span>Giao diện trên trình duyệt</span></button>
+                        <button class="track reveal" role="tab" aria-selected="false" data-track="mobile" data-d="1"><b>Mobile</b><span>App trên điện thoại</span></button>
+                        <button class="track reveal" role="tab" aria-selected="false" data-track="product" data-d="2"><b>Product</b><span>Vì sao cần làm ra nó?</span></button>
+                        <button class="track reveal" role="tab" aria-selected="false" data-track="unknown" data-d="3"><b>Chưa biết</b><span>Bắt đầu từ đâu cũng được</span></button>
+                    </div>
+                    <div class="track-detail" id="trackPanel" role="tabpanel" aria-live="polite"></div>
+                </div>
+            </section>
+            <section id="du-an" class="dark-sec">
+                <div class="wrap">
+                    <div class="sec-head center reveal">
+                        <p class="eyebrow center">Dự án</p>
+                        <h2>Tụi mình đã <em>làm được mấy thứ này nè.</em></h2>
+                        <p class="lead center">Mấy thứ này là tụi mình làm thật, đang chạy thử hoặc dùng nội bộ thôi. Bấm vào từng cái để xem tụi mình đã làm như thế nào nha.</p>
+                    </div>
+                    <div class="filters" role="tablist" aria-label="Lọc dự án">
+                        <button class="pill" role="tab" aria-selected="true" data-filter="all">Tất cả</button>
+                        <button class="pill" role="tab" aria-selected="false" data-filter="web">Web</button>
+                        <button class="pill" role="tab" aria-selected="false" data-filter="product">Product</button>
+                    </div>
+                    <p class="filter-note" id="filterNote" aria-live="polite">Đang hiển thị 4 dự án / demo.</p>
+                    <div class="project-grid" id="projectGrid">
+                        <article class="card project reveal" data-cat="web product">
+                            <div class="mini" aria-hidden="true"><i style="width: 88%"></i><i style="width: 55%"></i><i style="width: 70%"></i></div>
+                            <span class="status">Demo nội bộ</span>
+                            <div style="margin-bottom: 10px"><span class="chip">Web</span> <span class="chip">Product</span></div>
+                            <h3>Game mô phỏng BCN Top 1</h3>
+                            <p>Tân sinh viên nghe “vận hành cộng đồng” thì khó hình dung lắm, nên tụi mình làm thành game cho dễ hiểu.</p>
+                            <button class="toggle-btn" aria-expanded="false">Xem tụi mình làm sao <span class="chev">▾</span></button>
+                            <div class="solution"><p>Mô phỏng 3 năm BCN trên một màn hình: tuyển quân, chính sách, đấu thầu job, merch — chơi một lúc là hiểu liền.</p></div>
+                        </article>
+                        <article class="card project reveal" data-cat="web product" data-d="1">
+                            <div class="mini" aria-hidden="true"><i style="width: 70%"></i><i style="width: 88%"></i><i style="width: 45%"></i></div>
+                            <span class="status">Demo vận hành sự kiện</span>
+                            <div style="margin-bottom: 10px"><span class="chip">Web</span> <span class="chip">Product</span></div>
+                            <h3>Pixel Quest — Web theo dõi đội phá án</h3>
+                            <p>Sự kiện 8 đội mà theo dõi điểm, coin, manh mối bằng tay thì rối lắm.</p>
+                            <button class="toggle-btn" aria-expanded="false">Xem tụi mình làm sao <span class="chev">▾</span></button>
+                            <div class="solution"><p>Tụi mình làm bảng điều hành dạng dossier: điểm, coin, đấu giá đề tài, manh mối — nhìn một chỗ là đủ.</p></div>
+                        </article>
+                        <article class="card project reveal" data-cat="web product" data-d="2">
+                            <div class="mini" aria-hidden="true"><i style="width: 60%"></i><i style="width: 75%"></i><i style="width: 88%"></i></div>
+                            <span class="status">Demo giao diện</span>
+                            <div style="margin-bottom: 10px"><span class="chip">Web</span> <span class="chip">Product</span></div>
+                            <h3>USide — Trang thành viên</h3>
+                            <p>Trước giờ nhận và nộp bài qua Zalo thủ công, ai cũng mệt.</p>
+                            <button class="toggle-btn" aria-expanded="false">Xem tụi mình làm sao <span class="chev">▾</span></button>
+                            <div class="solution"><p>Demo trang thành viên: tự nhận bài, tự nộp, admin nhìn thấy tiến độ — chưa phải hệ thống chạy cho mọi người đâu nha.</p></div>
+                        </article>
+                        <article class="card project reveal" data-cat="product web" data-d="3">
+                            <div class="mini" aria-hidden="true"><i style="width: 88%"></i><i style="width: 40%"></i><i style="width: 65%"></i></div>
+                            <span class="status">Đã xuất bản nội bộ</span>
+                            <div style="margin-bottom: 10px"><span class="chip">Product</span> <span class="chip">Web</span></div>
+                            <h3>Thư viện tài liệu BCN</h3>
+                            <p>Kiến thức game design, UX với tổ chức hoạt động cứ nằm rải rác khắp nơi.</p>
+                            <button class="toggle-btn" aria-expanded="false">Xem tụi mình làm sao <span class="chev">▾</span></button>
+                            <div class="solution"><p>Tụi mình gom lại thành giáo trình PDF có mục lục, ví dụ và checklist, kèm file nguồn để sửa tiếp được.</p></div>
+                        </article>
+                    </div>
+                </div>
+            </section>
+            <section id="van-hoa">
+                <div class="wrap">
+                    <div class="sec-head reveal">
+                        <p class="eyebrow">Cách tụi mình làm việc với nhau</p>
+                        <h2>Chưa giỏi thì được, <em>làm ẩu thì không nha.</em></h2>
+                    </div>
+                    <div class="culture reveal" role="tablist" aria-label="Tình huống làm việc">
+                        <button class="culture-btn" aria-selected="true" data-culture="deadline">Không kịp deadline</button>
+                        <button class="culture-btn" aria-selected="false" data-culture="feedback">Bị chê sản phẩm</button>
+                        <button class="culture-btn" aria-selected="false" data-culture="sai">Làm sai hướng từ đầu</button>
+                        <button class="culture-btn" aria-selected="false" data-culture="trinhdo">Làm với người khác trình độ</button>
+                    </div>
+                    <div class="culture-answer reveal" id="cultureAnswer" role="tabpanel" aria-live="polite"></div>
+                </div>
+            </section>
+            <section id="noi-thang" style="border-top: 1px solid var(--border); background: #fff">
+                <div class="wrap">
+                    <div class="sec-head center reveal">
+                        <p class="eyebrow center">Nói thật với bạn</p>
+                        <h2>Vào đây vui, <em>nhưng không nhàn đâu.</em></h2>
+                        <p class="lead center">Tụi mình nói trước mấy điều này để bạn khỏi bất ngờ, chứ không phải để dọa bạn đâu nha.</p>
+                    </div>
+                    <div class="grid3">
+                        <article class="card reveal">
+                            <span class="n">01</span>
+                            <h3>Sẽ tốn thời gian đó</h3>
+                            <p>Học, làm bài, sửa bài — không có đường tắt đâu. Nhưng có người cùng làm nên đỡ chán hơn nhiều.</p>
+                        </article>
+                        <article class="card reveal" data-d="1">
+                            <span class="n">02</span>
+                            <h3>Có hôm sẽ bị chê</h3>
+                            <p>Sản phẩm mình làm có thể bị chỉ ra nhiều điểm yếu. Nghe thì hơi buồn, nhưng sửa xong là nó tốt lên thật.</p>
+                        </article>
+                        <article class="card card-dark reveal" data-d="2">
+                            <span class="n">03</span>
+                            <h3>Nhận việc là phải báo</h3>
+                            <p>Khi nào xong, khi nào kẹt thì nói sớm một tiếng. Im lặng tới phút cuối mới là thứ làm mọi người mệt.</p>
+                        </article>
+                    </div>
+                    <div class="letter-stage reveal" id="letterStage">
+                        <p class="letter-title">Có một bức thư gửi bạn.</p>
+                        <p class="letter-sub">Không phải thông báo, không phải quảng cáo. Chỉ vài lời tụi mình muốn nói trước.</p>
+                        <div class="envelope" id="envelopeBtn" role="button" tabindex="0" aria-expanded="false" aria-controls="letterPaper" aria-label="Mở bức thư gửi bạn đang phân vân">
+                            <div class="letter-paper" id="letterPaper" role="region" aria-label="Lời nhắn gửi bạn đang phân vân">
+                                <p class="lp-to">Chào bạn,</p>
+                                <p>Nếu bạn đang phân vân thì tụi mình hiểu mà. Ai mới bắt đầu cũng sợ mình không đủ giỏi, sợ vào rồi theo không kịp. Thật ra tụi mình cũng từng vậy đó.</p>
+                                <p>Bạn cứ thử một việc nhỏ thôi. Nếu thấy hợp thì ở lại, không hợp thì cũng không sao hết. Không ai bắt bạn phải quyết định ngay hôm nay đâu.</p>
+                                <p class="sign">— Tụi mình ở BCN</p>
+                            </div>
+                            <span class="env-flap-border" aria-hidden="true"></span>
+                            <span class="env-flap" aria-hidden="true"></span>
+                            <span class="env-front" aria-hidden="true"></span>
+                            <span class="env-addr"><b>Gửi bạn đang phân vân</b><span>Từ Ban Công Nghệ</span><i aria-hidden="true"></i></span>
+                            <span class="env-stamp" aria-hidden="true">BCN</span>
+                            <span class="env-seal" aria-hidden="true">B</span>
+                        </div>
+                        <span class="env-hint" id="envHint">Bấm vào phong bì để mở thư →</span>
+                        <button class="btn btn-ghost letter-close" id="closeLetter" type="button">Gấp thư lại, bỏ vào bì</button>
+                    </div>
+                    <p class="note">Về bằng chứng nè: dự án ở trên đều là demo/sản phẩm thật với trạng thái thật. Còn hồ sơ thành viên thì tụi mình sẽ chỉ đăng khi có bạn đồng ý công khai thôi, không dùng hồ sơ giả đâu.</p>
+                </div>
+            </section>
+            <section id="faq" style="border-top: 1px solid var(--border)">
+                <div class="wrap faq">
+                    <div class="sec-head reveal">
+                        <p class="eyebrow">FAQ</p>
+                        <h2>Hỏi nhanh, đáp gọn.</h2>
+                    </div>
+                    <div class="acc reveal">
+                        <button class="acc-btn" aria-expanded="false">Chưa biết lập trình thì có tìm hiểu BCN được không?<span class="plus">+</span></button>
+                        <div class="acc-panel">
+                            <div><p>Được nha, miễn là bạn nghiêm túc và muốn tiến bộ. Bắt đầu từ bài tập hợp với trình độ của bạn là được.</p></div>
+                        </div>
+                    </div>
+                    <div class="acc reveal">
+                        <button class="acc-btn" aria-expanded="false">Đã biết code mà chưa làm dự án thì sao?<span class="plus">+</span></button>
+                        <div class="acc-panel">
+                            <div><p>Hợp lắm luôn đó: ở BCN bạn sẽ được chia việc, review bài cho nhau và hoàn thiện một sản phẩm chung.</p></div>
+                        </div>
+                    </div>
+                    <div class="acc reveal">
+                        <button class="acc-btn" aria-expanded="false">Chưa biết chọn Web, Mobile hay Product?<span class="plus">+</span></button>
+                        <div class="acc-panel">
+                            <div><p>Chọn ô “Chưa biết” ở trên đi, tụi mình có lộ trình khám phá cho bạn, không cần chọn ngay đâu.</p></div>
+                        </div>
+                    </div>
+                    <div class="acc reveal">
+                        <button class="acc-btn" aria-expanded="false">Hiện BCN có tuyển thành viên không?<span class="plus">+</span></button>
+                        <div class="acc-panel">
+                            <div><p>Bạn chỉ tin thông báo chính thức từ kênh của BCN thôi nha. Trang này không ghi deadline khi chưa chắc chắn.</p></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="cta">
+                <div class="wrap reveal">
+                    <p class="eyebrow">Bước tiếp theo</p>
+                    <h2>Thử một việc nhỏ <em>trước đã nhé?</em></h2>
+                    <p class="lead" style="margin-top: 10px">Không cần giỏi trước đâu. Chỉ cần tò mò một chút là đủ rồi.</p>
+                    <div class="hero-ctas" style="justify-content: flex-start">
+                        <a class="btn btn-primary" href="#huong-di">Tìm hướng của bạn <span class="arr">→</span></a>
+                        <a class="btn btn-ghost" href="#du-an">Xem dự án trước</a>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <footer>
+            <div class="wrap foot-grid">
+                <div>
+                    <h4>Ban Công Nghệ — BCN</h4>
+                    <p>Cộng đồng sinh viên cùng học, cùng làm sản phẩm phần mềm.</p>
+                </div>
+                <div>
+                    <h4>Khám phá</h4>
+                    <p><a href="#huong-di">Bạn tò mò gì?</a><br /><a href="#du-an">Dự án</a><br /><a href="#noi-thang">Nói thật</a><br /><a href="#faq">FAQ</a></p>
+                </div>
+                <div>
+                    <h4>Kênh chính thức</h4>
+                    <p>Sẽ liệt kê khi BCN cung cấp kênh đã xác nhận. Không dùng liên kết giả.</p>
+                </div>
+            </div>
+            <div class="wrap" style="margin-top: 28px; border-top: 1px solid #333; padding-top: 18px; font-size: 13px; color: #888">© Ban Công Nghệ · Sáng làm nền, đen làm khung và điểm nhấn, vàng mật ong làm dấu ấn.</div>
+        </footer>
+        <script>
+            const $ = (s, c = document) => c.querySelector(s),
+                $$ = (s, c = document) => [...c.querySelectorAll(s)];
+            (function () {
+                const words = ["HỌC", "LÀM", "PHẢN HỒI", "CẢI THIỆN", "CHIA SẺ"];
+                const repeated = Array(8).fill(words).flat();
+                const groupHtml = repeated.map((w) => `<span>${w} <b>✦</b></span>`).join("");
+                $("#marqueeTrack").innerHTML = `<div class="marquee-group">${groupHtml}</div><div class="marquee-group" aria-hidden="true">${groupHtml}</div>`;
+            })();
+            addEventListener(
+                "scroll",
+                () => {
+                    const h = document.documentElement;
+                    const p = h.scrollTop / (h.scrollHeight - h.clientHeight || 1);
+                    $("#progress").style.width = p * 100 + "%";
+                },
+                { passive: true },
+            );
+            const io = new IntersectionObserver(
+                (es) =>
+                    es.forEach((e) => {
+                        if (e.isIntersecting) {
+                            e.target.classList.add("in");
+                            io.unobserve(e.target);
+                        }
+                    }),
+                { threshold: 0.12 },
+            );
+            $$(".reveal").forEach((el) => io.observe(el));
+            const mb = $("#menuBtn"),
+                nl = $("#navlinks");
+            mb.addEventListener("click", () => {
+                const open = nl.classList.toggle("open");
+                mb.setAttribute("aria-expanded", open);
+            });
+            nl.querySelectorAll("a").forEach((a) =>
+                a.addEventListener("click", () => {
+                    nl.classList.remove("open");
+                    mb.setAttribute("aria-expanded", "false");
+                }),
+            );
+            const spy = new IntersectionObserver(
+                (es) =>
+                    es.forEach((e) => {
+                        if (e.isIntersecting) {
+                            $$(".navlinks a").forEach((a) => a.classList.toggle("active", a.getAttribute("href") === "#" + e.target.id));
+                            $$(".rail a").forEach((a) => a.classList.toggle("active", a.dataset.rail === e.target.id));
+                        }
+                    }),
+                { rootMargin: "-40% 0px -55% 0px" },
+            );
+            ["top", "gioi-thieu", "huong-di", "du-an", "noi-thang", "faq"].forEach((id) => {
+                const el = document.getElementById(id);
+                if (el) spy.observe(el);
+            });
+            const cta = $("#heroCta"),
+                lbl = cta.querySelector(".btn-label");
+            cta.addEventListener("mouseenter", () => (lbl.textContent = cta.dataset.hover));
+            cta.addEventListener("mouseleave", () => (lbl.textContent = cta.dataset.default));
+            cta.addEventListener("focus", () => (lbl.textContent = cta.dataset.hover));
+            cta.addEventListener("blur", () => (lbl.textContent = cta.dataset.default));
+            const STATES = {
+                problem: { label: "Tên bài nộp của bạn", btn: "Gửi", fixed: false, hint: "Bấm thử nút này nha.", take: "<b>Có vấn đề nè:</b> Bấm “Gửi” rồi mà chẳng thấy gì xảy ra, thế là bấm thêm 3 lần nữa cho chắc.", toast: "…không có gì xảy ra. Bạn có chắc bài đã được gửi không?" },
+                first: { label: "Tên bài nộp của bạn", btn: "Gửi bài", fixed: false, hint: "Nhãn rõ hơn rồi, nhưng vẫn chưa có xác nhận.", take: "<b>Thử sửa lần 1:</b> Đổi nhãn thôi chưa đủ — người dùng vẫn phải đoán kết quả.", toast: "…vẫn im lặng. Nhãn đẹp hơn nhưng trải nghiệm chưa đổi." },
+                fixed: {
+                    label: "Tên bài nộp của bạn",
+                    btn: "Nộp bài →",
+                    fixed: true,
+                    hint: "Bấm thử đi — lần này có xác nhận ngay.",
+                    take: "<b>Sửa xong rồi nè:</b> Nhãn rõ + xác nhận ngay là người dùng hết phải đoán. Đơn giản vậy thôi.",
+                    toast: "✓ Đã nộp bài rồi nè. Bạn sẽ nhận phản hồi, không phải chờ trong im lặng.",
+                },
+            };
+            let heroState = "problem";
+            function renderHero() {
+                const s = STATES[heroState];
+                $("#mockLabel").textContent = s.label;
+                const b = $("#mockBtn");
+                b.textContent = s.btn;
+                b.classList.toggle("fixed", s.fixed);
+                $("#mockHint").textContent = s.hint;
+                $("#mockTakeaway").innerHTML = s.take;
+                $("#mockToast").classList.remove("show");
+                $$(".win-tab").forEach((t) => t.setAttribute("aria-selected", String(t.dataset.state === heroState)));
+            }
+            $$(".win-tab").forEach((t) =>
+                t.addEventListener("click", () => {
+                    heroState = t.dataset.state;
+                    renderHero();
+                }),
+            );
+            $("#mockBtn").addEventListener("click", () => {
+                const t = $("#mockToast");
+                t.textContent = STATES[heroState].toast;
+                t.classList.add("show");
+            });
+            renderHero();
+            const TRACKS = {
+                web: {
+                    t: "Web — làm giao diện trên trình duyệt",
+                    q: "“Sao trang web này đẹp vậy ta, người ta làm kiểu gì vậy?”",
+                    s: ["HTML / CSS / JavaScript", "Responsive design", "Tích hợp dữ liệu"],
+                    first: "Việc nhỏ đầu tiên bạn có thể thử nè: sửa một trang web có sẵn cho đẹp hơn trên điện thoại, chỉ một màn hình thôi là đủ.",
+                    rel: "Dự án liên quan: USide, Pixel Quest.",
+                },
+                mobile: {
+                    t: "Mobile — làm app trên điện thoại",
+                    q: "“Trên màn hình nhỏ xíu vậy, cái gì là quan trọng nhất ta?”",
+                    s: ["UI mobile", "Luồng & trạng thái", "Kết nối dữ liệu"],
+                    first: "Việc nhỏ đầu tiên bạn có thể thử nè: vẽ lại luồng chính của một app bạn hay dùng — chỉ 3 màn hình, ghi rõ bấm vào đâu thì ra cái gì.",
+                    rel: "Dự án liên quan: Game BCN Top 1.",
+                },
+                product: {
+                    t: "Product — tìm xem có đáng làm không",
+                    q: "“Vấn đề này có thật không ta, của ai, và làm sao biết giải pháp của mình có ích?”",
+                    s: ["Problem discovery", "User research", "Prototype & kiểm chứng"],
+                    first: "Việc nhỏ đầu tiên bạn có thể thử nè: hỏi 3 người về một khó khăn thật của họ, rồi viết vấn đề đó bằng đúng một câu.",
+                    rel: "Dự án liên quan: Thư viện tài liệu BCN, Pixel Quest.",
+                },
+                unknown: {
+                    t: "Chưa biết — thì khám phá từ từ thôi",
+                    q: "“Mình chưa biết mình hợp cái gì, có sao không ta?”",
+                    s: ["Thử một việc nhỏ mỗi hướng", "Nghe phản hồi", "Rồi mới chọn"],
+                    first: "Bạn thử 3 bước này nha: (1) Bấm thử cửa sổ nộp bài ở đầu trang. (2) Xem mấy dự án ở dưới. (3) Hướng nào khiến bạn muốn thử tiếp thì đó là hướng của bạn.",
+                    rel: "Không cần quyết định hôm nay đâu. Chưa biết mà chịu thử là được rồi.",
+                },
+            };
+            function renderTrack(d) {
+                const t = TRACKS[d.track];
+                const p = $("#trackPanel");
+                p.innerHTML = `<h3>${t.t}</h3><p><b>${t.q}</b></p><div class="skillchips">${t.s.map((x) => `<span class="chip">${x}</span>`).join("")}</div><div class="first-step"><b>👉 ${t.first}</b></div><p style="margin-top:12px">${t.rel}</p>`;
+                p.classList.remove("fade");
+                void p.offsetWidth;
+                p.classList.add("fade");
+            }
+            renderTrack({ track: "web" });
+            $$("[data-track]").forEach((b) =>
+                b.addEventListener("click", () => {
+                    $$("[data-track]").forEach((x) => x.setAttribute("aria-selected", "false"));
+                    b.setAttribute("aria-selected", "true");
+                    renderTrack({ track: b.dataset.track });
+                }),
+            );
+            $$("[data-filter]").forEach((b) =>
+                b.addEventListener("click", () => {
+                    $$("[data-filter]").forEach((x) => x.setAttribute("aria-selected", "false"));
+                    b.setAttribute("aria-selected", "true");
+                    const f = b.dataset.filter;
+                    let n = 0;
+                    $$("#projectGrid article").forEach((a) => {
+                        const show = f === "all" || a.dataset.cat.includes(f);
+                        a.style.display = show ? "" : "none";
+                        if (show) n++;
+                    });
+                    $("#filterNote").textContent = `Đang hiển thị ${n} dự án / demo.`;
+                }),
+            );
+            $$(".toggle-btn").forEach((btn) =>
+                btn.addEventListener("click", () => {
+                    const sol = btn.nextElementSibling;
+                    const open = sol.classList.toggle("open");
+                    btn.setAttribute("aria-expanded", open);
+                    btn.innerHTML = (open ? "Thu gọn " : "Xem tụi mình làm sao ") + '<span class="chev">▾</span>';
+                }),
+            );
+            const CULT = {
+                deadline: "<b>Không kịp deadline thì báo sớm nha, đừng im lặng.</b> Nói rõ phần nào xong, phần nào kẹt, rồi cùng nhau tính cách giảm việc hoặc nhờ hỗ trợ.",
+                feedback: "<b>Bị chê thì hỏi lại ví dụ cụ thể, rồi sửa từ từ.</b> Người ta chê sản phẩm thôi, không phải chê bạn đâu.",
+                sai: "<b>Làm sai hướng thì thừa nhận rồi làm lại.</b> Đổi hướng sớm đỡ tốn công hơn là cố giữ một hướng đã sai.",
+                trinhdo: "<b>Khác trình độ thì chia việc vừa sức, đừng làm thay.</b> Người giỏi giải thích rõ, người mới vẫn được làm việc thật chứ không chỉ làm việc vặt.",
+            };
+            function renderCulture(k) {
+                $("#cultureAnswer").innerHTML = CULT[k];
+            }
+            renderCulture("deadline");
+            $$("[data-culture]").forEach((b) =>
+                b.addEventListener("click", () => {
+                    $$("[data-culture]").forEach((x) => x.setAttribute("aria-selected", "false"));
+                    b.setAttribute("aria-selected", "true");
+                    renderCulture(b.dataset.culture);
+                }),
+            );
+            $$(".acc-btn").forEach((btn) =>
+                btn.addEventListener("click", () => {
+                    const acc = btn.parentElement,
+                        open = acc.classList.contains("open");
+                    $$(".acc").forEach((a) => {
+                        a.classList.remove("open");
+                        a.querySelector(".acc-btn").setAttribute("aria-expanded", "false");
+                    });
+                    if (!open) {
+                        acc.classList.add("open");
+                        btn.setAttribute("aria-expanded", "true");
+                    }
+                }),
+            );
+            /* Phong bì thư — sửa v10: mặt trước GIỮ NGUYÊN, không mờ đi nữa.
+   MỞ: nắp mở → thư trượt lên TRƯỚC mặt bì (z-index 10) như rút thư thật.
+   ĐÓNG: thư trượt xuống nhưng vẫn giữ z-index cao (letter-closing) cho tới khi về tới bì,
+   rồi mới chìm xuống sau mặt bì và nắp đóng lại. */
+            const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            const envBtn = $("#envelopeBtn"),
+                envHint = $("#envHint"),
+                letterStage = $("#letterStage");
+            let letterOpen = false,
+                letterTimers = [];
+            function clearLetterTimers() {
+                letterTimers.forEach(clearTimeout);
+                letterTimers = [];
+            }
+            function setLetter(open) {
+                clearLetterTimers();
+                letterOpen = open;
+                envBtn.setAttribute("aria-expanded", String(open));
+                letterStage.classList.toggle("open", open);
+                envHint.textContent = open ? "Thư đã mở rồi nè — đọc xong thì bấm “Gấp thư lại” nha." : "Bấm vào phong bì để mở thư →";
+                if (reduced) {
+                    envBtn.classList.toggle("flap-open", open);
+                    envBtn.classList.toggle("letter-up", open);
+                    envBtn.classList.remove("letter-closing");
+                    return;
+                }
+                if (open) {
+                    envBtn.classList.remove("letter-closing");
+                    envBtn.classList.add("flap-open");
+                    letterTimers.push(
+                        setTimeout(() => {
+                            envBtn.classList.add("letter-up");
+                            document.getElementById("letterPaper").scrollIntoView({ block: "center", behavior: "smooth" });
+                        }, 550),
+                    );
+                } else {
+                    envBtn.classList.remove("letter-up");
+                    envBtn.classList.add("letter-closing");
+                    letterTimers.push(
+                        setTimeout(() => {
+                            envBtn.classList.remove("letter-closing");
+                            envBtn.classList.remove("flap-open");
+                        }, 850),
+                    );
+                }
+            }
+            if (envBtn) {
+                envBtn.addEventListener("click", () => setLetter(!letterOpen));
+                envBtn.addEventListener("keydown", (e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        setLetter(!letterOpen);
+                    }
+                });
+                $("#closeLetter").addEventListener("click", () => {
+                    setLetter(false);
+                    envBtn.focus();
+                });
+            }
+        </script>
+    </body>
+</html>
