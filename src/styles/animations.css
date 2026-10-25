@@ -9,6 +9,7 @@
 
 .reveal.in,
 .reveal[data-revealed="true"],
+.letter-stage.in,
 .letter-stage.open,
 .acc.open {
     opacity: 1;

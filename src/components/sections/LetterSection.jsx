@@ -6,9 +6,11 @@ export function LetterSection() {
     const [flapOpen, setFlapOpen] = useState(false);
     const [letterUp, setLetterUp] = useState(false);
     const [letterClosing, setLetterClosing] = useState(false);
+    const [isRevealed, setIsRevealed] = useState(false);
 
     const envBtnRef = useRef(null);
     const letterPaperRef = useRef(null);
+    const stageRef = useRef(null);
     const timersRef = useRef([]);
 
     const clearAllTimers = () => {
@@ -17,8 +19,28 @@ export function LetterSection() {
     };
 
     useEffect(() => {
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+            setIsRevealed(true);
+            return;
+        }
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsRevealed(true);
+                    observer.disconnect();
+                }
+            },
+            { threshold: 0.1 }
+        );
+
+        if (stageRef.current) {
+            observer.observe(stageRef.current);
+        }
+
         return () => {
             clearAllTimers();
+            observer.disconnect();
         };
     }, []);
 
@@ -120,8 +142,8 @@ export function LetterSection() {
                 </div>
 
                 <div
-                    className={`letter-stage reveal ${letterOpen ? "open" : ""}`}
-                    data-revealed={letterOpen ? "true" : undefined}
+                    ref={stageRef}
+                    className={`letter-stage reveal ${isRevealed ? "in" : ""} ${letterOpen ? "open" : ""}`}
                     id="letterStage"
                 >
                     <p className="letter-title">Có một bức thư gửi bạn.</p>
