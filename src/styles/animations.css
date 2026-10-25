@@ -7,7 +7,10 @@
         transform 0.55s ease;
 }
 
-.reveal.in {
+.reveal.in,
+.reveal[data-revealed="true"],
+.letter-stage.open,
+.acc.open {
     opacity: 1;
     transform: none;
 }

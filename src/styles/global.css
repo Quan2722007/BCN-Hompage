@@ -991,6 +991,16 @@ section {
     transform: scale(0.98);
 }
 
+.envelope.flap-open:hover,
+.envelope.letter-up:hover {
+    transform: none;
+}
+
+.envelope.flap-open:active,
+.envelope.letter-up:active {
+    transform: none;
+}
+
 .letter-paper {
     position: absolute;
     left: 24px;
@@ -1033,6 +1043,9 @@ section {
     height: 430px;
     z-index: 10;
     box-shadow: 0 30px 60px rgba(23, 23, 23, 0.28);
+    cursor: default;
+    user-select: text;
+    overflow-y: auto;
 }
 
 .envelope.letter-closing .letter-paper {

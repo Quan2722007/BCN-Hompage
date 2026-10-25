@@ -7,7 +7,10 @@ export function useRevealAnimation() {
         const reveals = document.querySelectorAll(".reveal");
 
         if (reduced) {
-            reveals.forEach((el) => el.classList.add("in"));
+            reveals.forEach((el) => {
+                el.classList.add("in");
+                el.setAttribute("data-revealed", "true");
+            });
             return;
         }
 
@@ -16,6 +19,7 @@ export function useRevealAnimation() {
                 entries.forEach((entry) => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add("in");
+                        entry.target.setAttribute("data-revealed", "true");
                         observer.unobserve(entry.target);
                     }
                 });

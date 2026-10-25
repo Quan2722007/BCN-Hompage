@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 
-export function useActiveSection(sectionIds = ["top", "gioi-thieu", "huong-di", "du-an", "noi-thang", "faq"]) {
+const DEFAULT_SECTION_IDS = ["top", "gioi-thieu", "huong-di", "du-an", "noi-thang", "faq"];
+
+export function useActiveSection(sectionIds = DEFAULT_SECTION_IDS) {
     const [activeSection, setActiveSection] = useState("top");
 
     useEffect(() => {

@@ -40,8 +40,12 @@ export function LetterSection() {
             setFlapOpen(true);
             const t = setTimeout(() => {
                 setLetterUp(true);
+                // Đảm bảo bức thư không bị che khuất bởi sticky header nếu ở vị trí quá cao
                 if (letterPaperRef.current) {
-                    letterPaperRef.current.scrollIntoView({ block: "center", behavior: "smooth" });
+                    const rect = letterPaperRef.current.getBoundingClientRect();
+                    if (rect.top < 80) {
+                        window.scrollBy({ top: rect.top - 90, behavior: "smooth" });
+                    }
                 }
             }, 550);
             timersRef.current.push(t);
@@ -67,7 +71,8 @@ export function LetterSection() {
         }
     };
 
-    const handleClose = () => {
+    const handleClose = (e) => {
+        if (e) e.stopPropagation();
         setLetterState(false);
         if (envBtnRef.current) {
             envBtnRef.current.focus();
@@ -114,7 +119,11 @@ export function LetterSection() {
                     </article>
                 </div>
 
-                <div className={`letter-stage reveal ${letterOpen ? "open" : ""}`} id="letterStage">
+                <div
+                    className={`letter-stage reveal ${letterOpen ? "open" : ""}`}
+                    data-revealed={letterOpen ? "true" : undefined}
+                    id="letterStage"
+                >
                     <p className="letter-title">Có một bức thư gửi bạn.</p>
                     <p className="letter-sub">
                         Không phải thông báo, không phải quảng cáo. Chỉ vài lời tụi mình muốn nói trước.
@@ -138,6 +147,11 @@ export function LetterSection() {
                             id="letterPaper"
                             role="region"
                             aria-label="Lời nhắn gửi bạn đang phân vân"
+                            onClick={(e) => {
+                                if (letterOpen) {
+                                    e.stopPropagation();
+                                }
+                            }}
                         >
                             <p className="lp-to">Chào bạn,</p>
                             <p>
